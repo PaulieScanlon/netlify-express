@@ -2,8 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import serverless from 'serverless-http';
-import compression from 'compression';
-import serve from 'serve-static';
 
 const app = express();
 
@@ -15,9 +13,6 @@ const exists = (file) => {
 
 const server = async () => {
   let template, serverFile, serverFunction, serverData;
-
-  app.use(compression());
-  app.use(serve(`${__dirname}/client`, { index: false }));
 
   app.use('*', async (req, res) => {
     const url = req.originalUrl;
