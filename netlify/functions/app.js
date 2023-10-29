@@ -7,10 +7,6 @@ const app = express();
 
 import { render } from './server/entry-server';
 
-const exists = (file) => {
-  return fs.existsSync(file);
-};
-
 const server = async () => {
   let template, serverFile, serverFunction, serverData;
 
@@ -22,7 +18,7 @@ const server = async () => {
       template = fs.readFileSync(`${__dirname}/client/index.html`, 'utf-8');
       serverFile = path.resolve(`${__dirname}/functions${safeUrl}/function.cjs`);
 
-      if (exists(serverFile)) {
+      if (fs.existsSync(serverFile)) {
         serverFunction = await require(serverFile).GET;
         serverData = await serverFunction();
       }
