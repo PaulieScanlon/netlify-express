@@ -22,23 +22,19 @@ const server = async () => {
       template = fs.readFileSync(`${__dirname}/client/index.html`, 'utf-8');
       serverFile = path.resolve(`${__dirname}/functions${safeUrl}/function.cjs`);
 
-      console.log('serverFile: ', serverFile);
-
       if (exists(serverFile)) {
         serverFunction = await require(serverFile).GET;
         serverData = await serverFunction();
       }
 
       const dom = render(url, serverData);
-
       const script = `<script>window.__data__=${JSON.stringify(serverData)}</script>`;
       const html = template.replace(`<!--ssr-outlet-->`, `${dom} ${script}`);
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
     } catch (error) {
-      console.log('///// error');
-      console.log(error);
-      const html = `<pre>${JSON.stringify(error, null, 2)}</pre>`;
+      const dom = `<pre>${JSON.stringify(error, null, 2)}</pre>`;
+      const html = template.replace(`<!--ssr-outlet-->`, dom);
       res.status(500).set({ 'Content-Type': 'text/html' }).end(html);
     }
   });
@@ -47,19 +43,3 @@ const server = async () => {
 server();
 
 export const handler = serverless(app);
-
-// const resolve = (file) => {
-//   return process.env.LAMBDA_TASK_ROOT
-//     ? path.resolve(process.env.LAMBDA_TASK_ROOT, file)
-//     : path.resolve(__dirname, file);
-// };
-
-// let dir = fs.readdir(`${__dirname}/server`, (err, files) => {
-//   if (err) console.log(err);
-//   else {
-//     console.log('\nCurrent directory filenames:');
-//     files.forEach((file) => {
-//       console.log(file);
-//     });
-//   }
-// });
