@@ -20,7 +20,10 @@ const server = async () => {
       );
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
-    } catch (error) {}
+    } catch (error) {
+      const html = `<pre>${JSON.stringify(error, null, 2)}</pre>`;
+      res.status(500).set({ 'Content-Type': 'text/html' }).end(html);
+    }
   });
 };
 
