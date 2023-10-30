@@ -3,9 +3,9 @@ import path from 'path';
 import express from 'express';
 import serverless from 'serverless-http';
 
-const app = express();
-
 import { render } from './server/entry-server';
+
+const app = express();
 
 const server = async () => {
   let template, serverFile, serverFunction, serverData;
