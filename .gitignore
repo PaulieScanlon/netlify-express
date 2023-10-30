@@ -131,3 +131,6 @@ dist
 
 # Local Netlify folder
 .netlify
+netlify/functions/client
+netlify/functions/server
+netlify/functions/functions
